@@ -12,7 +12,7 @@ const AuthenticateMagicLink = ({ error }: Props) => {
     return (
       <div>
         <p>{`Error: ${error}`}</p>
-        <Link href="../../recipes/api-webauthn">
+        <Link href="../../recipes/smsmfa">
           <a className="link">Click here to start over</a>
         </Link>
       </div>
@@ -40,7 +40,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     // Save Stytch session to a cookie
     const cookies = new Cookies(context.req, context.res);
-    cookies.set('api_webauthn_session', response.session_token, {
+    cookies.set('api_session', response.session_token, {
       httpOnly: true,
       maxAge: 1000 * 60 * 30, // 30 minutes
     });

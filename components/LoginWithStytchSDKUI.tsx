@@ -1,12 +1,16 @@
 import React from 'react';
 import { StytchLogin } from '@stytch/nextjs';
-import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig } from '@stytch/vanilla-js';
+import { StytchLoginConfig, OAuthProviders, OneTapPositions, Products, StyleConfig, StytchEvent, StytchError } from '@stytch/vanilla-js';
 import { getDomainFromWindow } from '../lib/urlUtils';
 
 const sdkStyle: StyleConfig = {
   fontFamily: '"Helvetica New", Helvetica, sans-serif',
-  primaryColor: '#19303d',
-  primaryTextColor: '#090909',
+  buttons: {
+    primary: {
+      backgroundColor: '#19303d',
+      textColor: '#ffffff',
+    },
+  },
 };
 
 const sdkConfig: StytchLoginConfig = {
@@ -20,7 +24,7 @@ const sdkConfig: StytchLoginConfig = {
   },
   oauthOptions: {
     providers: [
-      { type: OAuthProviders.Google, one_tap: true, position: OneTapPositions.embedded },
+      { type: OAuthProviders.Google, one_tap: true},
       { type: OAuthProviders.Apple },
       { type: OAuthProviders.Microsoft },
       { type: OAuthProviders.Facebook },
@@ -32,9 +36,11 @@ const sdkConfig: StytchLoginConfig = {
   },
 };
 
-const LoginWithMagicLinks = () => (
-  <div style={{ paddingRight: '20px' }}>
-    <StytchLogin config={sdkConfig} styles={sdkStyle} />
-  </div>
-);
-export default LoginWithMagicLinks;
+const callbackConfig = {
+  onEvent: (message: StytchEvent) => console.log(message),
+  onError: (error: StytchError) => console.log(error),
+}
+
+const LoginWithStytchSDKUI = () => <StytchLogin config={sdkConfig} styles={sdkStyle} callbacks={callbackConfig} />;
+
+export default LoginWithStytchSDKUI;
